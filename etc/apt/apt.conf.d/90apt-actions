@@ -1,0 +1,4 @@
+DPkg::Pre-Install-Pkgs {"/usr/libexec/apt-actions --parse";};
+DPkg::Pre-Install-Pkgs {"/usr/libexec/apt-actions --pre";};
+DPkg::Post-Invoke {"/usr/libexec/apt-actions --post";};
+DPkg::Tools::Options::/usr/libexec/apt-actions::Version "3";
