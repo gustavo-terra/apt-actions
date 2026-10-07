@@ -1,0 +1,26 @@
+# apt-actions reads all files ended with ".action", by default under /etc/apt-actions/actions.d
+# lines starting with # are ignored (comments)
+
+# each rule follows this structure
+# package_target;phase;transaction_type;command
+
+# note the semicolon as separator
+
+# package_target - which packages should trigger this rule (shell-style globs work too)
+# phase: pre, post or * - run the rule before or after the transaction (or both)
+# transaction_type - install, remove, upgrade, reinstall, downgrade
+# command - your custom command
+
+# below are some examples
+
+# print a message after firefox package was updated
+firefox;post;upgrade;echo "Firefox was updated. Yay!"
+
+# create a file after a new kernel is installed
+linux-image*;post;install;touch /root/example_file
+
+# print a message before kernel is uninstalled
+linux-image-generic;pre;remove;echo "Caution, uninstalling kernel package!"
+
+# sign a bootloader with custom keys after an upgrade 
+shim-signed;post;upgrade;sbsign --key my_key --cert my_cert /path/to/shim.signed
