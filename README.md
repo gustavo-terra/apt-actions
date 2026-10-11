@@ -11,6 +11,16 @@ Actions can match package names using shell-style globs and can access informati
 apt-actions is currently experimental and should not be considered production-ready. It is provided without any guarantee of correctness, reliability or suitability
 for a particular purpose. 
 
+## Requirements
+
+apt-actions requires Python 3.7 or newer. Therefore, the "minimal requirement" would
+be Ubuntu 20.04 or Debian 10.
+
+Was tested and confirmed working on:
+- Ubuntu 20.04
+- Ubuntu 26.04
+- Debian 13
+
 ## Inspiration
 
 The project was inspired by dnf transaction plugins.
