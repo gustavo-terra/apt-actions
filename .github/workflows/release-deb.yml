@@ -1,0 +1,42 @@
+name: Build .deb
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: apt-actions
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the .deb
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          PKG="${APP_NAME}_${VERSION}_all"
+
+          # main script
+          install -D -m 755 src/apt_actions.py "$PKG/usr/libexec/apt-actions"
+
+          # apt hook
+          install -D -m 644 etc/apt/apt.conf.d/90apt-actions \
+            "$PKG/etc/apt/apt.conf.d/90apt-actions"
+
+          # empty actions directory created on install
+          install -d -m 755 "$PKG/etc/apt-actions/actions.d"
+
+          install -d -m 755 "$PKG/DEBIAN"
+          sed "s/@VERSION@/$VERSION/" packaging/control > "$PKG/DEBIAN/control"
+
+          dpkg-deb --root-owner-group --build "$PKG"
+
+      - name: Attach the .deb to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" ./*.deb --repo "$GITHUB_REPOSITORY"
