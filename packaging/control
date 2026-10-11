@@ -1,0 +1,10 @@
+Package: apt-actions
+Version: @VERSION@
+Section: utils
+Priority: optional
+Architecture: all
+Depends: python3 (>= 3.7), apt (>= 1.8.2)
+Maintainer: Gustavo Terra <179854972+gustavo-terra@users.noreply.github.com>
+Description: Run custom actions before and after apt package transactions.
+ apt-actions provides a simple rule-based mechanism for executing commands when 
+ packages are installed, upgraded, downgraded, reinstalled or removed.
