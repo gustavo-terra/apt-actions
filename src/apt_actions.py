@@ -239,7 +239,7 @@ class AptActions:
         
         logger.info(f"loaded {str(len(self.actions))} actions")
 
-    # remediation functions to avoid duplicate --pre/--post when updating from certain GUI utilities
+    # REMEDIATION: functions to avoid duplicate --pre/--post when updating from certain GUI utilities (see issue #1)
     def _pre_marker_path(self):
         return self.runtime_dir / "pre.done"
     
