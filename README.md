@@ -18,6 +18,8 @@ be Ubuntu 20.04 or Debian 10.
 
 Was tested and confirmed working on:
 - Ubuntu 20.04
+- Ubuntu 24.04
+- Linux Mint 22
 - Ubuntu 26.04
 - Debian 13
 
