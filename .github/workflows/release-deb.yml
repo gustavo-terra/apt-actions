@@ -28,6 +28,9 @@ jobs:
           install -D -m 644 etc/apt/apt.conf.d/90apt-actions \
             "$PKG/etc/apt/apt.conf.d/90apt-actions"
 
+          # license
+          install -D -m 644 packaging/copyright "$PKG/usr/share/doc/$APP_NAME/copyright"
+
           # empty actions directory created on install
           install -d -m 755 "$PKG/etc/apt-actions/actions.d"
 
