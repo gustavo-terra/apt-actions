@@ -24,6 +24,9 @@ Was tested and confirmed working on:
 - Debian 10
 - Debian 13
 
+*NOTE* some applications might interfere with apt-actions and workarounds may be implemented.
+See [issues](https://github.com/gustavo-terra/apt-actions/issues) for more information.
+
 ## Inspiration
 
 The project was inspired by dnf transaction plugins.
