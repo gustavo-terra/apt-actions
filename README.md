@@ -21,6 +21,7 @@ Was tested and confirmed working on:
 - Ubuntu 24.04
 - Linux Mint 22
 - Ubuntu 26.04
+- Debian 10
 - Debian 13
 
 ## Inspiration
