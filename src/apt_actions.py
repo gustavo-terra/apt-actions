@@ -51,6 +51,13 @@ def parse_args():
 
     return parser.parse_args()
 
+# helper function instead of using missin_ok=True (Python 3.7 compatibility)
+def _unlink(path):
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        pass
+
 @dataclass()
 class PackageTransaction:
     name: str
@@ -255,7 +262,7 @@ class AptActions:
         self._pre_marker_path().write_text(signature)
 
     def _clear_pre_marker(self):
-        self._pre_marker_path().unlink(missing_ok=True)
+        _unlink(self._pre_marker_path)
 
     def run_actions(self, current_phase: str, ignore_errors: bool = False):
         logger.info(f"running phase {current_phase}")
@@ -289,7 +296,7 @@ class AptActions:
                 logger.warning(f"error when deleting {self._pre_marker_path()}: {e}")
             
             try:
-                self.tmp_file.unlink(missing_ok=True)
+                _unlink(self.tmp_file)
             except OSError as e:
                 logger.warning(f"error when deleting {self.tmp_file}: {e}")
 
