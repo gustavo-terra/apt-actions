@@ -268,7 +268,7 @@ class AptActions:
         self._pre_marker_path().write_text(signature)
 
     def _clear_pre_marker(self):
-        _unlink(self._pre_marker_path)
+        _unlink(self._pre_marker_path())
 
     def run_actions(self, current_phase: str, ignore_errors: bool = False):
         logger.info(f"running phase {current_phase}")
