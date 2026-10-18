@@ -24,6 +24,10 @@ jobs:
           # main script
           install -D -m 755 src/apt_actions.py "$PKG/usr/libexec/apt-actions"
 
+          # stamp the release version into the script
+          sed -i "s/@VERSION@/$VERSION/" "$PKG/usr/libexec/apt-actions"
+          grep -q "__version__ = \"$VERSION\"" "$PKG/usr/libexec/apt-actions"
+
           # apt hook
           install -D -m 644 etc/apt/apt.conf.d/90apt-actions \
             "$PKG/etc/apt/apt.conf.d/90apt-actions"

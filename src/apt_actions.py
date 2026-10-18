@@ -13,6 +13,11 @@ from pathlib import Path
 from dataclasses import dataclass, asdict, field, fields
 from typing import List
 
+__version__ = "@VERSION@" # stamped by the release workflow
+
+def get_version():
+    return "dev" if __version__.startswith("@") else __version__
+
 logger = logging.getLogger(__name__)
 
 def configure_logging(verbose, log_file = None):
@@ -48,6 +53,7 @@ def parse_args():
     parser.add_argument("--verbose", help="Enable verbose logging", action="store_true")
     parser.add_argument("--ignore-action-errors", help="Do not fail the hook even if an action's command fails",
     action="store_true")
+    parser.add_argument("--version", action="version", version=f"apt-actions {get_version()}")
 
     return parser.parse_args()
 
@@ -306,17 +312,34 @@ class AptActions:
         elif any_failed:
             logger.warning(f"one or more actions failed during {current_phase} phase, ignoring errors")
 
+    def _cleanup_runtime(self):
+        for path in (self._pre_marker_path(), self.tmp_file):
+            try:
+                _unlink(path)
+            except OSError as e:
+                logger.warning(f"error when deleting {path}: {e}")
+
     def main(self, args):
         ignore_errors = args.ignore_action_errors
 
-        if args.parse:
-            self.parse()
-        
-        elif args.pre:
-            self.run_actions("pre", ignore_errors)
+        try:
+            if args.parse:
+                self.parse()
+            
+            elif args.pre:
+                self.run_actions("pre", ignore_errors)
 
-        elif args.post:
-            self.run_actions("post", ignore_errors)
+            elif args.post:
+                self.run_actions("post", ignore_errors)
+        except (ValueError, OSError) as e:
+            logger.error(f"{type(e).__name__}: {e}")
+            if args.post: # cleanup
+                self._cleanup_runtime()
+
+            if ignore_errors and not args.parse:
+                logger.warning("ignoring error (--ignore-action-errors)")
+                return
+            raise SystemExit(1)
 
 
 if __name__ == "__main__":
